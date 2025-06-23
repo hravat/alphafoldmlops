@@ -1,0 +1,7 @@
+# Use the official MLflow image as the base
+FROM mageai/mageai:latest
+
+# Install psycopg2 and any other necessary dependencies
+RUN pip install mlflow psycopg2-binary
+
+

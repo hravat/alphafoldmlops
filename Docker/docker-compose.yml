@@ -1,0 +1,163 @@
+services:
+  postgres:
+    image: postgres:latest  # Specify the image to use (optional if using build)
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}  # Set PostgreSQL password
+      POSTGRES_USER: ${POSTGRES_USER}  # Optional, but you can set the user
+      POSTGRES_DB: ${POSTGRES_DB}  # Optional, but can specify database name
+      POSTGRES_MAX_WAL_SIZE: 1GB
+    volumes:
+      - ../data:/data  # Mount local data folder to container (where dumps will be stored)
+      - ../db-init:/docker-entrypoint-initdb.d  # Mount init SQL scripts folder
+      - .env:/docker-entrypoint-initdb.d/.env
+    ports:
+      - "5432:5432"  # Expose PostgreSQL port
+    networks:
+      - my_network
+    restart: always
+
+  jupyter:
+    build:
+      context: .
+      dockerfile: dockerfile.jupyter
+    ports:
+      - "8888:8888"
+      - "8000:8000"
+    environment:
+      - JUPYTER_TOKEN=
+      - JUPYTER_PASSWORD=
+    command: start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''
+    volumes:
+      - ../../data:/data
+      - ../models:/models
+    networks:
+      - my_network  
+
+  mage:
+    build:
+      context: .
+      dockerfile: dockerfile.mage
+    container_name: mage
+    environment:
+      - MAGE_DATABASE_CONNECTION_URL=${MAGE_DATABASE_CONNECTION_URL}
+    volumes:
+      - ../mage:/home/src
+      - ../mlflow-artifacts:/mlflow-artifacts
+    ports:
+      - "6789:6789"
+    networks:
+      - my_network
+    depends_on:
+      - postgres
+
+  mlflow:
+    build:
+      context: .
+      dockerfile: dockerfile.mlflow
+    container_name: mlflow_server
+    restart: always
+    environment:
+      MLFLOW_TRACKING_URI: ${MLFLOW_TRACKING_URI}
+      BACKEND_STORE_URI: ${BACKEND_STORE_URI}
+    ports:
+      - "5000:5000"
+    volumes:
+      - ../mlflow-artifacts:/mlflow-artifacts
+    depends_on:
+      - postgres
+    entrypoint: ["mlflow", "server"]
+    command: [
+      "--backend-store-uri", "${BACKEND_STORE_URI}",
+      "--default-artifact-root", "${ARTIFACT_ROOT}",
+      "--host", "0.0.0.0",
+      "--port", "5000"
+    ]
+    networks:
+      - my_network
+
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+    networks:
+      - my_network
+    ports:
+      - 9090:9090
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    ports:
+      - "3000:3000"  # Expose Grafana's port
+    #volumes:
+    #  - ~/grafana-storage:/var/lib/grafana  # Persist Grafana data
+    #  - ./grafana/dashboards/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml  # Provisioning configuration
+    #  - ./grafana/datasources:/etc/grafana/provisioning/datasources
+    #  - ./grafana/dashboards:/var/lib/grafana/dashboards
+    #  - ./grafana/geojson:/usr/share/grafana/public/maps
+    #  - ./grafana/scripts:/usr/share/grafana/public/scripts
+    networks:
+      - my_network
+
+  minio:
+    image: minio/minio:latest
+    entrypoint: ["minio", "server", "--address", "0.0.0.0:9000", "--console-address", "0.0.0.0:9001", "/data"]
+    volumes:
+      - "../minio:/data"
+    ports:
+      - 9000:9000
+      - 9001:9001
+    networks:
+      - my_network
+
+  server:
+    image: prefecthq/prefect:3-python3.12
+    volumes:
+      - ../prefect:/root/.prefect
+    entrypoint: ["/opt/prefect/entrypoint.sh", "prefect", "server", "start"]
+    environment:
+      PREFECT_UI_URL: ${PREFECT_UI_URL}
+      PREFECT_API_URL: ${PREFECT_SERVER_API_URL}
+      PREFECT_SERVER_API_HOST: ${PREFECT_SERVER_API_HOST}
+      PREFECT_API_DATABASE_CONNECTION_URL: ${PREFECT_API_DATABASE_CONNECTION_URL}
+    ports:
+      - 4200:4200
+    depends_on:
+      - postgres
+    networks:
+      - my_network
+
+  worker:
+    image: prefecthq/prefect:3-python3.12
+    restart: always
+    entrypoint: ["/opt/prefect/entrypoint.sh", "prefect", "worker", "start", "-p", "YOUR_WORK_QUEUE_NAME"]
+    environment:
+      PREFECT_API_URL: ${PREFECT_WORKER_API_URL}
+    working_dir: "/flows"
+    volumes:
+      - "../flows:/flows"
+    networks:
+      - my_network
+  cli:
+    image: prefecthq/prefect:3-python3.12
+    entrypoint: ["bash", "-c", "yes n | prefect deploy --all && tail -f /dev/null"]
+    working_dir: "/flows"
+    volumes:
+      - "../flows:/flows"
+    environment:
+        PREFECT_API_URL: ${PREFECT_CLI_API_URL}
+    stdin_open: true
+    tty: true
+    networks:
+      - my_network
+      
+networks:
+  my_network:
+    driver: bridge

@@ -1,0 +1,17 @@
+FROM jupyter/base-notebook
+
+# Install required Python packages
+RUN pip install --no-cache-dir \
+    requests \
+    pandas \
+    tqdm \
+    scikit-learn \
+    joblib \
+    evidently \ 
+    prefect \
+    matplotlib \
+    sqlalchemy \
+    scikit-learn \
+    jupyter \
+    psycopg2-binary
+

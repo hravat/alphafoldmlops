@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Create a directory to store all data
+mkdir -p bio_data && cd bio_data
+
+echo "Downloading ClinVar VCF..."
+# ClinVar: Mutation → Gene/Disease
+wget -c https://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/clinvar.vcf.gz
+wget -c https://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/clinvar.vcf.gz.tbi
+
+echo "Downloading Reactome gene-to-pathway mappings..."
+# Reactome: Gene → Pathway
+wget -c https://reactome.org/download/current/Ensembl2Reactome_All_Levels.txt
+wget -c https://reactome.org/download/current/ReactomePathwaysRelation.txt
+wget -c https://reactome.org/download/current/ReactomePathways.txt
+
+echo "Downloading and extracting ChEMBL database..."
+# ChEMBL: Drug → Target → Mechanism
+wget -c ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/latest/chembl_34_sqlite.tar.gz
+tar -xzvf chembl_34_sqlite.tar.gz
+
+echo "All data downloaded and extracted successfully in ./bio_data"

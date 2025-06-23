@@ -1,0 +1,6 @@
+artifact_location: file:///home/src/mlruns/542044736746904520
+creation_time: 1750673692538
+experiment_id: '542044736746904520'
+last_update_time: 1750673692538
+lifecycle_stage: active
+name: ml_linear_regression

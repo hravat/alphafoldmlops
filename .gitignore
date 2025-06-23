@@ -1,0 +1,5 @@
+/data
+/Abandoned Data Integration
+/minio
+/mlflow-artifacts
+/mage/mage_data/default_repo/pipelines/ml_regression_pipeline/.logs

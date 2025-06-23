@@ -4,3 +4,5 @@
 /mlflow-artifacts
 /mage/mage_data/default_repo/pipelines/ml_regression_pipeline/.logs
 /mage/mage_data/default_repo/pipelines/ml_regression_pipeline/.variables
+/mage/mage_data/default_repo/.cache
+prefect/memo_store.toml

@@ -10,12 +10,12 @@ blocks:
     limit: 1000
     use_raw_sql: false
   downstream_blocks:
-  - m__data_transformer
+  - ml_data_transforner
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: sql
-  name: ml_data_loader
+  name: ml-data-loader
   retry_config: null
   status: executed
   timeout: null
@@ -28,54 +28,48 @@ blocks:
     data_provider: postgres
     data_provider_profile: dev
     export_write_policy: append
-    file_path: transformers/m__data_transformer.py
-    file_source:
-      path: transformers/m__data_transformer.py
   downstream_blocks:
-  - train_and_log_lr_model
+  - train_and_log_ml_model
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: python
-  name: m;_data_transformer
+  name: ml-data-transforner
   retry_config: null
   status: executed
   timeout: null
   type: transformer
   upstream_blocks:
   - ml_data_loader
-  uuid: m__data_transformer
+  uuid: ml_data_transforner
 - all_upstream_blocks_executed: true
   color: null
-  configuration:
-    file_path: transformers/train_and_log_lr_model.py
-    file_source:
-      path: transformers/train_and_log_lr_model.py
+  configuration: {}
   downstream_blocks: []
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: python
-  name: train_and_log_lr_model
+  name: train-and-log-ml-model
   retry_config: null
-  status: updated
+  status: failed
   timeout: null
   type: transformer
   upstream_blocks:
-  - m__data_transformer
-  uuid: train_and_log_lr_model
+  - ml_data_transforner
+  uuid: train_and_log_ml_model
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}
 conditionals: []
-created_at: '2025-06-23 09:57:26.944646+00:00'
+created_at: '2025-06-24 09:28:34.916740+00:00'
 data_integration: null
 description: null
 executor_config: {}
 executor_count: 1
 executor_type: null
 extensions: {}
-name: ml_regression_pipeline
+name: ml-regerssion-pipeline
 notification_config: {}
 remote_variables_dir: null
 retry_config: {}
@@ -85,6 +79,6 @@ settings:
 spark_config: {}
 tags: []
 type: python
-uuid: ml_regression_pipeline
+uuid: ml_regerssion_pipeline
 variables_dir: /home/src/mage_data/default_repo
 widgets: []

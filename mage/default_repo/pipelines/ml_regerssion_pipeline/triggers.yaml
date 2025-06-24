@@ -1,0 +1,14 @@
+triggers:
+- description: null
+  envs: []
+  last_enabled_at: 2025-06-24 09:51:18.872927+00:00
+  name: ml_lr_pipeline_trigger
+  pipeline_uuid: ml_regerssion_pipeline
+  schedule_interval: null
+  schedule_type: api
+  settings: null
+  sla: null
+  start_time: 2025-06-24 09:47:00+00:00
+  status: active
+  token: 5b9ad51754e5488ebdeb4513b7489538
+  variables: {}

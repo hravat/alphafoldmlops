@@ -1,0 +1,5 @@
+# Use the official MLflow image as the base
+FROM prefecthq/prefect:3-python3.12
+
+# Install psycopg2 and any other necessary dependencies
+RUN pip install mlflow psycopg2-binary

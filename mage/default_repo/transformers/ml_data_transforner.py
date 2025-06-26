@@ -8,9 +8,18 @@ import mlflow
 import mlflow.sklearn
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
+import gc
+import psutil
+import os
+
+def _log_mem(tag: str = ""):
+    process = psutil.Process(os.getpid())
+    rss_mb = process.memory_info().rss / 1024 ** 2
+    print(f"[{tag}] RSS: {rss_mb:.1f} MB")
 
 @transformer
 def transform(data, *args, **kwargs):
+    _log_mem("start") 
     """
     Template code for a transformer block.
 
@@ -40,6 +49,11 @@ def transform(data, *args, **kwargs):
         "y_test": y_test
     }
     # Return all four for downstream blocks
+
+    del data
+    gc.collect()
+    _log_mem("after gc")
+
     return train_dict
 
 

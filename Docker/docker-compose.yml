@@ -43,12 +43,14 @@ services:
     volumes:
       - ../mage:/home/src
       - ../mlflow-artifacts:/mlflow-artifacts
+      - ../models:/home/src/models
     ports:
       - "6789:6789"
     networks:
       - my_network
     depends_on:
       - postgres
+    mem_limit: 4g  
 
   mlflow:
     build:
@@ -135,7 +137,9 @@ services:
       - my_network
 
   worker:
-    image: prefecthq/prefect:3-python3.12
+    build:
+      context: .
+      dockerfile: dockerfile.prefectworker
     restart: always
     entrypoint: ["/opt/prefect/entrypoint.sh", "prefect", "worker", "start", "-p", "YOUR_WORK_QUEUE_NAME"]
     environment:

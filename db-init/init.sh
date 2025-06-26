@@ -113,4 +113,11 @@ DROP TABLE public.chembl_ml_dataset;
 
 -- Optional: Rename new table to original name
 ALTER TABLE public.chembl_ml_dataset_shuffled RENAME TO chembl_ml_dataset;
+
+CREATE INDEX idx_rownum ON PUBLIC.CHEMBL_ML_DATASET (rownum);
+
+analyze PUBLIC.CHEMBL_ML_DATASET; 
+
 EOF
+
+

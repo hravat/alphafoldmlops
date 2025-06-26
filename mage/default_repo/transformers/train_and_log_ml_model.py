@@ -5,10 +5,23 @@ if 'test' not in globals():
 
 import mlflow
 import mlflow.sklearn
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression ,SGDRegressor
 from sklearn.model_selection import train_test_split
 from datetime import datetime
 from mlflow.tracking import MlflowClient
+import gc
+import psutil
+import gc
+import psutil
+import os
+from pathlib import Path
+import joblib
+
+def _log_mem(tag: str = ""):
+    process = psutil.Process(os.getpid())
+    rss_mb = process.memory_info().rss / 1024 ** 2
+    print(f"[{tag}] RSS: {rss_mb:.1f} MB")
+
 
 @transformer
 def transform(train_dict, *args, **kwargs):
@@ -25,10 +38,20 @@ def transform(train_dict, *args, **kwargs):
     Returns:
         Anything (e.g. data frame, dictionary, array, int, str, etc.)
     """
+
+    MODEL_PATH = Path("/home/src/models/regerssion/sgd_reg.pkl")
+
+    if MODEL_PATH.exists():
+        model = joblib.load(MODEL_PATH)
+    else:
+        model = SGDRegressor(random_state=42)
+
+
     # Specify your transformation logic here
     X_train = train_dict['X_train']
     y_train = train_dict['y_train']
     run_uuid=kwargs['run_uuid']
+    is_last_batch=kwargs['is_last_batch']
 
     mlflow.set_tracking_uri("http://mlflow:5000") 
 
@@ -62,17 +85,22 @@ def transform(train_dict, *args, **kwargs):
     # Add custom tags
     with mlflow.start_run() as run:
 
-        model = LinearRegression()
-        model.fit(X_train, y_train)        
+        if is_last_batch:
+            model.fit(X_train, y_train)
+        else:    
+            model.partial_fit(X_train, y_train)        
+        # Save model for the next pass
+        MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
+        joblib.dump(model, MODEL_PATH)
+        
         mlflow.set_tag("run_uuid", run_uuid)
         mlflow.set_tag("run_datetime", datetime.now().isoformat()) 
 
-    return train_dict
 
 
-@test
-def test_output(output, *args) -> None:
-    """
-    Template code for testing the output of the block.
-    """
-    assert output is not None, 'The output is undefined'
+    del train_dict
+    gc.collect()
+    _log_mem("after gc")
+
+
+    return None

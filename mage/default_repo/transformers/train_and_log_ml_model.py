@@ -50,12 +50,13 @@ def transform(train_dict, *args, **kwargs):
     # Specify your transformation logic here
     X_train = train_dict['X_train']
     y_train = train_dict['y_train']
-    run_uuid=kwargs['run_uuid']
-    is_last_batch=kwargs['is_last_batch']
+
+    run_uuid = kwargs.get('run_uuid') or 'dummy'
+    is_last_batch = kwargs.get('is_last_batch') or True
 
     mlflow.set_tracking_uri("http://mlflow:5000") 
 
-    experiment_name='ml-limear-regression'
+    experiment_name='ml-linear-regression'
     existing_experiment = mlflow.get_experiment_by_name(experiment_name)
     if existing_experiment is None:
         mlflow.create_experiment(experiment_name)

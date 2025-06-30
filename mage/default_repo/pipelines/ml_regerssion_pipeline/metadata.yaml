@@ -15,14 +15,14 @@ blocks:
   executor_type: local_python
   has_callback: false
   language: sql
-  name: m,_data_loader
+  name: ml_data_loader
   retry_config: null
-  status: updated
+  status: executed
   timeout: null
   type: data_loader
   upstream_blocks: []
-  uuid: m__data_loader
-- all_upstream_blocks_executed: false
+  uuid: ml_data_loader
+- all_upstream_blocks_executed: true
   color: null
   configuration:
     data_provider: postgres
@@ -40,9 +40,9 @@ blocks:
   timeout: null
   type: transformer
   upstream_blocks:
-  - m__data_loader
+  - ml_data_loader
   uuid: ml_data_transforner
-- all_upstream_blocks_executed: false
+- all_upstream_blocks_executed: true
   color: null
   configuration: {}
   downstream_blocks: []
@@ -52,7 +52,7 @@ blocks:
   language: python
   name: train-and-log-ml-model
   retry_config: null
-  status: updated
+  status: executed
   timeout: null
   type: transformer
   upstream_blocks:

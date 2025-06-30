@@ -105,7 +105,7 @@ psql -U "$DB_USER" -d "$PREFECT_DB" -c "GRANT ALL ON SCHEMA sb TO $PREFECT_USER;
 psql -U "postgres" -d chembl_db <<EOF
 CREATE TABLE public.chembl_ml_dataset_shuffled AS
 SELECT *,
-       ROW_NUMBER() OVER (ORDER BY RANDOM()) AS rownum
+    ROW_NUMBER() OVER (ORDER BY RANDOM()) AS rownum
 FROM public.chembl_ml_dataset;
 
 -- Optional: Drop original table if not needed

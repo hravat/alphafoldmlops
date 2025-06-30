@@ -99,9 +99,9 @@ def transform(train_dict, *args, **kwargs):
 
 
 
-    del train_dict
-    gc.collect()
-    _log_mem("after gc")
+    #del train_dict
+    #gc.collect()
+    #_log_mem("after gc")
 
 
-    return None
+    return train_dict

@@ -161,7 +161,15 @@ services:
     tty: true
     networks:
       - my_network
-      
+
+  evidently:
+    image: evidently/evidently-service:latest
+    container_name: evidently
+    ports:
+      - "8085:8000"
+    networks:
+      - my_network
+
 networks:
   my_network:
     driver: bridge

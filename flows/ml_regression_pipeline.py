@@ -72,11 +72,11 @@ def ml_regerssion_pipeline():
 
     print(f"Total rows in {table_name}: {total_rows}")
 
-    batch_size = total_rows // 10
+    batch_size = total_rows // 5
 
     is_last_batch=False 
 
-    for batch_num in range(10):
+    for batch_num in range(5):
         row_start = batch_num * batch_size + 1
         row_end = (batch_num + 1) * batch_size if batch_num < 9 else total_rows
         

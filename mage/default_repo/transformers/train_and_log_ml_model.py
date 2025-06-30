@@ -16,6 +16,7 @@ import psutil
 import os
 from pathlib import Path
 import joblib
+import pandas as pd
 
 def _log_mem(tag: str = ""):
     process = psutil.Process(os.getpid())
@@ -50,7 +51,7 @@ def transform(train_dict, *args, **kwargs):
     # Specify your transformation logic here
     X_train = train_dict['X_train']
     y_train = train_dict['y_train']
-
+    X_test = train_dict['X_test']
     run_uuid = kwargs.get('run_uuid') or 'dummy'
     is_last_batch = kwargs.get('is_last_batch') or True
 
@@ -88,8 +89,12 @@ def transform(train_dict, *args, **kwargs):
 
         if is_last_batch:
             model.fit(X_train, y_train)
+            y_train_pred=model.predict(X_train)
+            y_test_pred=model.predict(X_test)
         else:    
-            model.partial_fit(X_train, y_train)        
+            model.partial_fit(X_train, y_train)   
+            y_train_pred=model.predict(X_train)
+            y_test_pred=model.predict(X_test)     
         # Save model for the next pass
         MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
         joblib.dump(model, MODEL_PATH)
@@ -97,7 +102,8 @@ def transform(train_dict, *args, **kwargs):
         mlflow.set_tag("run_uuid", run_uuid)
         mlflow.set_tag("run_datetime", datetime.now().isoformat()) 
 
-
+        train_dict['y_train_pred']=pd.DataFrame(y_train_pred)
+        train_dict['y_test_pred']=pd.DataFrame(y_test_pred)
 
     #del train_dict
     #gc.collect()

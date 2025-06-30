@@ -5,6 +5,8 @@ if 'test' not in globals():
 
 
 from evidently.ui.workspace import RemoteWorkspace
+from evidently.presets import DataDriftPreset, RegressionPreset
+from evidently import Dataset, DataDefinition, Regression ,Report  # new imports
 
 @transformer
 def transform(train_dict, *args, **kwargs):
@@ -48,7 +50,39 @@ def transform(train_dict, *args, **kwargs):
         project.save()
         print(f"Created project '{PROJECT_NAME}'")
 
+
+
+    reg_defintion = DataDefinition(
+    regression=[Regression(target="standard_value", prediction="y_pred")]
+    )
+
+    report = Report([
+    RegressionPreset(),
+    DataDriftPreset()
+    ],
+    include_tests=True)
+
+    reference_df = train_dict["X_train"]   # must contain y_true and y_pred
+    current_df   = train_dict["X_test"]
+    y_train_pred = train_dict["y_train_pred"]
+    y_test_pred = train_dict["y_test_pred"]
+    y_train=train_dict['y_train']
+    y_test=train_dict['y_test']
+
+    reference_df['y_pred']=y_train_pred
+    current_df['y_pred']=y_test_pred
+    reference_df['standard_value']=y_train
+    current_df['standard_value']=y_train
+
+    reference_ds = Dataset.from_pandas(reference_df, data_definition=reg_defintion)
+    current_ds   = Dataset.from_pandas(current_df,   data_definition=reg_defintion)
+
+    my_eval = report.run(reference_ds, current_ds)
+
+    ws.add_run(project.id, my_eval)
+    
     return train_dict
+
 
 
 @test

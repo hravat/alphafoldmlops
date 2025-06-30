@@ -62,7 +62,8 @@ blocks:
 - all_upstream_blocks_executed: true
   color: null
   configuration: {}
-  downstream_blocks: []
+  downstream_blocks:
+  - ml_push_to_premetheus
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -75,6 +76,22 @@ blocks:
   upstream_blocks:
   - train_and_log_ml_model
   uuid: ml_push_to_evidently
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: ml_push_to_premetheus
+  retry_config: null
+  status: executed
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - ml_push_to_evidently
+  uuid: ml_push_to_premetheus
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}

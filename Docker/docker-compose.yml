@@ -46,11 +46,14 @@ services:
       - ../models:/home/src/models
     ports:
       - "6789:6789"
+      - "8082:8082"
     networks:
       - my_network
     depends_on:
       - postgres
     mem_limit: 4g  
+    command: >
+      bash -c "python /home/src/metric_server.py & mage start default_repo"
 
   mlflow:
     build:
@@ -169,6 +172,16 @@ services:
       - "8085:8000"
     networks:
       - my_network
+
+  pushgateway:
+    image: prom/pushgateway:v1.7.0        # current stable tag
+    container_name: pushgateway
+    restart: unless-stopped
+    ports:
+      - "9091:9091"
+    networks:
+      - my_network                        # use the same network as prometheus
+
 
 networks:
   my_network:

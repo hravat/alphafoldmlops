@@ -81,7 +81,9 @@ def transform(train_dict, *args, **kwargs):
 
     ws.add_run(project.id, my_eval)
     
-    return train_dict
+    my_eval_dict = my_eval.dict()
+
+    return my_eval_dict
 
 
 

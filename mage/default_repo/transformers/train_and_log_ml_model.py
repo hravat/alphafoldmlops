@@ -17,6 +17,9 @@ import os
 from pathlib import Path
 import joblib
 import pandas as pd
+from sklearn.ensemble import RandomForestRegressor       # NEW
+from xgboost import XGBRegressor                         # NEW
+
 
 def _log_mem(tag: str = ""):
     process = psutil.Process(os.getpid())
@@ -40,24 +43,27 @@ def transform(train_dict, *args, **kwargs):
         Anything (e.g. data frame, dictionary, array, int, str, etc.)
     """
 
-    MODEL_PATH = Path("/home/src/models/regerssion/sgd_reg.pkl")
+    run_uuid = kwargs.get("run_uuid") or "dummy"
+    is_last_batch = kwargs.get("is_last_batch") or True
+    model_type = kwargs.get("model_type") or "SGDRegressor"
+    params = kwargs.get("params") or {"alpha": 0.001}
+    
+    MODEL_DIR = Path("/home/src/models/experiment")
+    MODEL_DIR.mkdir(parents=True, exist_ok=True)
 
-    if MODEL_PATH.exists():
-        model = joblib.load(MODEL_PATH)
-    else:
-        model = SGDRegressor(random_state=42)
+    model_path = MODEL_DIR / f"{run_uuid}_{model_type}.pkl"        # FIXED
+
+    
 
 
     # Specify your transformation logic here
     X_train = train_dict['X_train']
     y_train = train_dict['y_train']
     X_test = train_dict['X_test']
-    run_uuid = kwargs.get('run_uuid') or 'dummy'
-    is_last_batch = kwargs.get('is_last_batch') or True
 
     mlflow.set_tracking_uri("http://mlflow:5000") 
-
-    experiment_name='ml-linear-regression'
+    experiment_name = f"ml-{model_type.lower()}"
+    
     existing_experiment = mlflow.get_experiment_by_name(experiment_name)
     if existing_experiment is None:
         mlflow.create_experiment(experiment_name)
@@ -83,6 +89,18 @@ def transform(train_dict, *args, **kwargs):
     # Start a fresh run
     mlflow.set_experiment(experiment_name)
     mlflow.sklearn.autolog()
+
+    if model_path.exists():
+        model = joblib.load(model_path)
+    else:
+        if model_type == "SGDRegressor":
+            model = SGDRegressor(random_state=42, **params)
+        elif model_type == "RandomForest":
+            model = RandomForestRegressor(random_state=42, **params)
+        elif model_type == "XGBoost":
+            model = XGBRegressor(random_state=42, **params, use_label_encoder=False, eval_metric="rmse")
+        else:
+            raise ValueError(f"Unknown model_type: {model_type}")
     
     # Add custom tags
     with mlflow.start_run() as run:
@@ -96,11 +114,13 @@ def transform(train_dict, *args, **kwargs):
             y_train_pred=model.predict(X_train)
             y_test_pred=model.predict(X_test)     
         # Save model for the next pass
-        MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
-        joblib.dump(model, MODEL_PATH)
+       
+        joblib.dump(model, model_path) 
         
         mlflow.set_tag("run_uuid", run_uuid)
         mlflow.set_tag("run_datetime", datetime.now().isoformat()) 
+        mlflow.set_tag("model_type", model_type)
+        mlflow.set_tag("params", str(params))
 
         train_dict['y_train_pred']=pd.DataFrame(y_train_pred)
         train_dict['y_test_pred']=pd.DataFrame(y_test_pred)

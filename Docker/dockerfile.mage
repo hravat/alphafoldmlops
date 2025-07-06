@@ -2,5 +2,5 @@
 FROM mageai/mageai:latest
 
 # Install psycopg2 and any other necessary dependencies
-RUN pip install mlflow psycopg2-binary evidently
+RUN pip install mlflow psycopg2-binary evidently xgboost
 

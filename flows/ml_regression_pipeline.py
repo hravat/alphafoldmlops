@@ -79,9 +79,14 @@ def ml_regerssion_pipeline():
     
     # -------------- grid search definition -------------------------
     search_space = []
+    #rf_grid = [{"max_depth": d} for d in [3, 5, 7]]
+    #xgb_grid = [{"eta": e} for e in [0.05, 0.1, 0.3]]
+    #sgd_grid = [{"alpha": a} for a in [0.0001, 0.001, 0.01]]
+    
     rf_grid = [{"max_depth": d} for d in [3, 5, 7]]
-    xgb_grid = [{"eta": e} for e in [0.05, 0.1, 0.3]]
-    sgd_grid = [{"alpha": a} for a in [0.0001, 0.001, 0.01]]
+    xgb_grid = [{"eta": e} for e in [0.3]]
+    sgd_grid = [{"alpha": a} for a in [0.0001]]
+    
     
     for p in rf_grid:
         search_space.append(("RandomForest", p))
@@ -94,7 +99,8 @@ def ml_regerssion_pipeline():
 
     is_last_batch=False 
 
-    for model_type, params in filter(lambda x: x[0] == 'SGDRegressor', search_space):
+    #for model_type, params in search_space:
+    for model_type, params in filter(lambda x: x[0] == "RandomForest", search_space):
         run_uuid = str(uuid.uuid4())
         
         

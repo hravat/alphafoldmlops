@@ -101,13 +101,10 @@ services:
       - GF_AUTH_DISABLE_LOGIN_FORM=true
     ports:
       - "3000:3000"  # Expose Grafana's port
-    #volumes:
-    #  - ~/grafana-storage:/var/lib/grafana  # Persist Grafana data
-    #  - ./grafana/dashboards/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml  # Provisioning configuration
-    #  - ./grafana/datasources:/etc/grafana/provisioning/datasources
-    #  - ./grafana/dashboards:/var/lib/grafana/dashboards
-    #  - ./grafana/geojson:/usr/share/grafana/public/maps
-    #  - ./grafana/scripts:/usr/share/grafana/public/scripts
+    volumes:
+      - ../grafana/dashboards/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
+      - ../grafana/dashboards/json:/var/lib/grafana/dashboards
+      - ../grafana/datasources:/etc/grafana/provisioning/datasources
     networks:
       - my_network
 

@@ -30,7 +30,7 @@ deployments:
     job_variables: {}
   schedules: []
 
-- name: ml_regerssion_pipeline_run
+- name: ml_regression_pipeline_run
   version: null
   tags: []
   concurrency_limit: null
@@ -43,3 +43,15 @@ deployments:
     job_variables: {}
   schedules: []
 
+- name: ml_regression_pipeline_parallel
+  version: null
+  tags: []
+  concurrency_limit: null
+  description: "Machine learning pipeline flow"
+  entrypoint: ml_regression_pipeline_parallel.py:ml_regression_pipeline_parallel
+  parameters: {}
+  work_pool:
+    name: YOUR_WORK_QUEUE_NAME
+    work_queue_name: null
+    job_variables: {}
+  schedules: []

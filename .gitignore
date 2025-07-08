@@ -9,3 +9,4 @@ prefect/memo_store.toml
 /mage/mage_data/default_repo/pipelines/ml_regerssion_pipeline/.logs
 /mage/mage_data/default_repo/pipelines/ml_regerssion_pipeline/.variables
 mage/mage_data/
+/models

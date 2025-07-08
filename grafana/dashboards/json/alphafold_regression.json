@@ -21,107 +21,154 @@
   "id": 3,
   "links": [],
   "panels": [
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+  {
+    "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+    "fieldConfig": {
+      "defaults": {
+        "color": { "mode": "fixed", "fixedColor": "#FF0000" }
       },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
+      "overrides": []
+    },
+    "gridPos": { "h": 16, "w": 12, "x": 0, "y": 0 },
+    "id": 1,
+    "options": { "legend": { "showLegend": true }, "tooltip": { "mode": "single" } },
+    "targets": [
+      {
+        "expr": "alf_abs_max_err",
+        "legendFormat": "Absolute Maximum Error",
+        "refId": "A"
+      }
+    ],
+    "title": "Absolute Maximum Error",
+    "type": "timeseries"
+  },
+  {
+    "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+    "fieldConfig": {
+      "defaults": {
+        "color": { "mode": "fixed", "fixedColor": "#00FF00" }
       },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 0
+      "overrides": []
+    },
+    "gridPos": { "h": 16, "w": 12, "x": 12, "y": 0 },
+    "id": 2,
+    "options": { "legend": { "showLegend": true }, "tooltip": { "mode": "single" } },
+    "targets": [
+      {
+        "expr": "alf_rmse",
+        "legendFormat": "RMSE",
+        "refId": "A"
+      }
+    ],
+    "title": "RMSE",
+    "type": "timeseries"
+  },
+  {
+    "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+    "fieldConfig": {
+      "defaults": {
+        "color": { "mode": "fixed", "fixedColor": "#0000FF" }
       },
-      "id": 1,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
+      "overrides": []
+    },
+    "gridPos": { "h": 16, "w": 12, "x": 0, "y": 16 },
+    "id": 3,
+    "options": { "legend": { "showLegend": true }, "tooltip": { "mode": "single" } },
+    "targets": [
+      {
+        "expr": "alf_mae_mean",
+        "legendFormat": "MAE Mean",
+        "refId": "A"
+      }
+    ],
+    "title": "MAE Mean",
+    "type": "timeseries"
+  },
+  {
+    "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+    "fieldConfig": {
+      "defaults": {
+        "color": { "mode": "fixed", "fixedColor": "#FF00FF" }
       },
-      "pluginVersion": "12.0.1+security-01",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "alf_abs_max_err",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "legendFormat": "Absolute Maximum Error",
-          "range": true,
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Absolute Maximum Error",
-      "type": "timeseries"
-    }
-  ],
+      "overrides": []
+    },
+    "gridPos": { "h": 16, "w": 12, "x": 12, "y": 16 },
+    "id": 4,
+    "options": { "legend": { "showLegend": true }, "tooltip": { "mode": "single" } },
+    "targets": [
+      {
+        "expr": "alf_mae_std",
+        "legendFormat": "MAE Std",
+        "refId": "A"
+      }
+    ],
+    "title": "MAE Std",
+    "type": "timeseries"
+  },
+  {
+    "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+    "fieldConfig": {
+      "defaults": {
+        "color": { "mode": "fixed", "fixedColor": "#FFA500" }
+      },
+      "overrides": []
+    },
+    "gridPos": { "h": 16, "w": 12, "x": 0, "y": 32 },
+    "id": 5,
+    "options": { "legend": { "showLegend": true }, "tooltip": { "mode": "single" } },
+    "targets": [
+      {
+        "expr": "alf_mape_mean",
+        "legendFormat": "MAPE Mean",
+        "refId": "A"
+      }
+    ],
+    "title": "MAPE Mean",
+    "type": "timeseries"
+  },
+  {
+    "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+    "fieldConfig": {
+      "defaults": {
+        "color": { "mode": "fixed", "fixedColor": "#00CED1" }
+      },
+      "overrides": []
+    },
+    "gridPos": { "h": 16, "w": 12, "x": 12, "y": 32 },
+    "id": 6,
+    "options": { "legend": { "showLegend": true }, "tooltip": { "mode": "single" } },
+    "targets": [
+      {
+        "expr": "alf_mape_std",
+        "legendFormat": "MAPE Std",
+        "refId": "A"
+      }
+    ],
+    "title": "MAPE Std",
+    "type": "timeseries"
+  },
+  {
+    "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+    "fieldConfig": {
+      "defaults": {
+        "color": { "mode": "fixed", "fixedColor": "#8A2BE2" }
+      },
+      "overrides": []
+    },
+    "gridPos": { "h": 16, "w": 12, "x": 0, "y": 48 },
+    "id": 7,
+    "options": { "legend": { "showLegend": true }, "tooltip": { "mode": "single" } },
+    "targets": [
+      {
+        "expr": "alf_r2",
+        "legendFormat": "R2 Score",
+        "refId": "A"
+      }
+    ],
+    "title": "R2 Score",
+    "type": "timeseries"
+  }
+],
   "preload": false,
   "schemaVersion": 41,
   "tags": [],

@@ -82,11 +82,17 @@ def ml_regerssion_pipeline():
     #rf_grid = [{"max_depth": d} for d in [3, 5, 7]]
     #xgb_grid = [{"eta": e} for e in [0.05, 0.1, 0.3]]
     #sgd_grid = [{"alpha": a} for a in [0.0001, 0.001, 0.01]]
+    nn_grid = [
+    {"hidden_layer_sizes": (64, 32), "learning_rate_init": 0.01, "max_iter": 1, "warm_start": True},
+    {"hidden_layer_sizes": (128,), "learning_rate_init": 0.005, "max_iter": 1, "warm_start": True},
+            ]
     
-    rf_grid = [{"max_depth": d} for d in [3, 5, 7]]
+    rf_grid = [{"max_depth": d} for d in [7]]
     xgb_grid = [{"eta": e} for e in [0.3]]
     sgd_grid = [{"alpha": a} for a in [0.0001]]
-    
+    nn_grid = [
+    {"hidden_layer_sizes": (64, 32), "learning_rate_init": 0.01, "max_iter": 1, "warm_start": True}
+            ]
     
     for p in rf_grid:
         search_space.append(("RandomForest", p))
@@ -94,13 +100,14 @@ def ml_regerssion_pipeline():
         search_space.append(("XGBoost", p))
     for p in sgd_grid:
         search_space.append(("SGDRegressor", p))
-    
+    for p in nn_grid:
+        search_space.append(("NeuralNet", p))
     # ---------------------------------------------------------------
 
     is_last_batch=False 
 
-    #for model_type, params in search_space:
-    for model_type, params in filter(lambda x: x[0] == "RandomForest", search_space):
+    for model_type, params in search_space:
+    #for model_type, params in filter(lambda x: x[0] == "NeuralNet", search_space):
         run_uuid = str(uuid.uuid4())
         
         

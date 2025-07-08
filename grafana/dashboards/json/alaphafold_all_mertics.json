@@ -1,169 +1,187 @@
-# Use the original dashboard structure from the user's message
-original_dashboard = {
-    "annotations": {
-        "list": [
-            {
-                "builtIn": 1,
-                "datasource": {
-                    "type": "grafana",
-                    "uid": "-- Grafana --"
-                },
-                "enable": True,
-                "hide": True,
-                "iconColor": "rgba(0, 211, 255, 1)",
-                "name": "Annotations & Alerts",
-                "type": "dashboard"
-            }
-        ]
-    },
-    "editable": True,
-    "fiscalYearStartMonth": 0,
-    "graphTooltip": 0,
-    "id": 3,
-    "links": [],
-    "panels": [],
-    "preload": False,
-    "schemaVersion": 41,
-    "tags": [],
-    "templating": {
-        "list": []
-    },
-    "time": {
-        "from": "now-5m",
-        "to": "now"
-    },
-    "timepicker": {},
-    "timezone": "browser",
-    "title": "Alphafold Regression Overview",
-    "uid": "fe10707e-459b-4a91-a7dc-95a539bf5454",
-    "version": 1
-}
-
-# Include the original panel
-original_panel = {
-    "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-    },
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 3,
+  "links": [],
+  "panels": [
+  {
+    "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
     "fieldConfig": {
-        "defaults": {
-            "color": {
-                "mode": "palette-classic"
-            },
-            "custom": {
-                "axisBorderShow": False,
-                "axisCenteredZero": False,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                    "legend": False,
-                    "tooltip": False,
-                    "viz": False
-                },
-                "insertNulls": False,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                    "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": False,
-                "stacking": {
-                    "group": "A",
-                    "mode": "none"
-                },
-                "thresholdsStyle": {
-                    "mode": "off"
-                }
-            },
-            "mappings": [],
-            "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                    {"color": "green"},
-                    {"color": "red", "value": 80}
-                ]
-            }
-        },
-        "overrides": []
+      "defaults": {
+        "color": { "mode": "fixed", "fixedColor": "#FF0000" }   /* red */
+      },
+      "overrides": []
     },
-    "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 0
-    },
+    "gridPos": { "h": 8, "w": 6, "x": 0, "y": 0 },
     "id": 1,
-    "options": {
-        "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "bottom",
-            "showLegend": True
-        },
-        "tooltip": {
-            "hideZeros": False,
-            "mode": "single",
-            "sort": "none"
-        }
-    },
-    "pluginVersion": "12.0.1+security-01",
+    "options": { "legend": { "showLegend": true }, "tooltip": { "mode": "single" } },
     "targets": [
-        {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
-            },
-            "disableTextWrap": False,
-            "editorMode": "builder",
-            "expr": "alf_abs_max_err",
-            "fullMetaSearch": False,
-            "includeNullMetadata": True,
-            "legendFormat": "Absolute Maximum Error",
-            "range": True,
-            "refId": "A",
-            "useBackend": False
-        }
+      {
+        "expr": "alf_abs_max_err",
+        "legendFormat": "Absolute Maximum Error",
+        "refId": "A"
+      }
     ],
     "title": "Absolute Maximum Error",
     "type": "timeseries"
+  },
+  {
+    "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+    "fieldConfig": {
+      "defaults": {
+        "color": { "mode": "fixed", "fixedColor": "#00FF00" }   /* green */
+      },
+      "overrides": []
+    },
+    "gridPos": { "h": 8, "w": 6, "x": 6, "y": 0 },
+    "id": 2,
+    "options": { "legend": { "showLegend": true }, "tooltip": { "mode": "single" } },
+    "targets": [
+      {
+        "expr": "alf_rmse",
+        "legendFormat": "RMSE",
+        "refId": "A"
+      }
+    ],
+    "title": "RMSE",
+    "type": "timeseries"
+  },
+  {
+    "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+    "fieldConfig": {
+      "defaults": {
+        "color": { "mode": "fixed", "fixedColor": "#0000FF" }   /* blue */
+      },
+      "overrides": []
+    },
+    "gridPos": { "h": 8, "w": 6, "x": 0, "y": 8 },
+    "id": 3,
+    "options": { "legend": { "showLegend": true }, "tooltip": { "mode": "single" } },
+    "targets": [
+      {
+        "expr": "alf_mae_mean",
+        "legendFormat": "MAE Mean",
+        "refId": "A"
+      }
+    ],
+    "title": "MAE Mean",
+    "type": "timeseries"
+  },
+  {
+    "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+    "fieldConfig": {
+      "defaults": {
+        "color": { "mode": "fixed", "fixedColor": "#FF00FF" }   /* magenta */
+      },
+      "overrides": []
+    },
+    "gridPos": { "h": 8, "w": 6, "x": 6, "y": 8 },
+    "id": 4,
+    "options": { "legend": { "showLegend": true }, "tooltip": { "mode": "single" } },
+    "targets": [
+      {
+        "expr": "alf_mae_std",
+        "legendFormat": "MAE Std",
+        "refId": "A"
+      }
+    ],
+    "title": "MAE Std",
+    "type": "timeseries"
+  },
+  {
+    "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+    "fieldConfig": {
+      "defaults": {
+        "color": { "mode": "fixed", "fixedColor": "#FFA500" }   /* orange */
+      },
+      "overrides": []
+    },
+    "gridPos": { "h": 8, "w": 6, "x": 0, "y": 16 },
+    "id": 5,
+    "options": { "legend": { "showLegend": true }, "tooltip": { "mode": "single" } },
+    "targets": [
+      {
+        "expr": "alf_mape_mean",
+        "legendFormat": "MAPE Mean",
+        "refId": "A"
+      }
+    ],
+    "title": "MAPE Mean",
+    "type": "timeseries"
+  },
+  {
+    "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+    "fieldConfig": {
+      "defaults": {
+        "color": { "mode": "fixed", "fixedColor": "#00CED1" }   /* teal */
+      },
+      "overrides": []
+    },
+    "gridPos": { "h": 8, "w": 6, "x": 6, "y": 16 },
+    "id": 6,
+    "options": { "legend": { "showLegend": true }, "tooltip": { "mode": "single" } },
+    "targets": [
+      {
+        "expr": "alf_mape_std",
+        "legendFormat": "MAPE Std",
+        "refId": "A"
+      }
+    ],
+    "title": "MAPE Std",
+    "type": "timeseries"
+  },
+  {
+    "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+    "fieldConfig": {
+      "defaults": {
+        "color": { "mode": "fixed", "fixedColor": "#8A2BE2" }   /* purple */
+      },
+      "overrides": []
+    },
+    "gridPos": { "h": 8, "w": 6, "x": 0, "y": 24 },
+    "id": 7,
+    "options": { "legend": { "showLegend": true }, "tooltip": { "mode": "single" } },
+    "targets": [
+      {
+        "expr": "alf_r2",
+        "legendFormat": "R2 Score",
+        "refId": "A"
+      }
+    ],
+    "title": "R2 Score",
+    "type": "timeseries"
+  }
+],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Alphafold Regression Metrics Copy",
+  "uid": "fe10707e-459b-4a91-a7dc-95a539bf5454",
+  "version": 1
 }
-
-# Add the base panel
-original_dashboard["panels"].append(original_panel)
-
-# Add additional metric panels
-metrics = [
-    ("alf_rmse", "RMSE", 12, 0),
-    ("alf_r2", "R² Score", 0, 8),
-    ("alf_mae_mean", "MAE Mean", 12, 8),
-    ("alf_mae_std", "MAE Std Dev", 0, 16),
-    ("alf_mape_mean", "MAPE Mean", 12, 16),
-    ("alf_mape_std", "MAPE Std Dev", 0, 24),
-]
-
-base_id = 2
-
-for i, (expr, title, x, y) in enumerate(metrics):
-    panel = deepcopy(original_panel)
-    panel["id"] = base_id + i
-    panel["gridPos"]["x"] = x
-    panel["gridPos"]["y"] = y
-    panel["targets"][0]["expr"] = expr
-    panel["targets"][0]["legendFormat"] = title
-    panel["title"] = title
-    original_dashboard["panels"].append(panel)
-
-# Save the full dashboard
-output_json_path = "/mnt/data/alphafold_regression_dashboard.json"
-with open(output_json_path, "w") as f:
-    json.dump(original_dashboard, f, indent=2)
-
-output_json_path

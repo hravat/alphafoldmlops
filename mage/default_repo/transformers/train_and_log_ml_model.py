@@ -21,7 +21,7 @@ import pandas as pd
 from sklearn.ensemble import RandomForestRegressor       # NEW
 from xgboost import XGBRegressor                         # NEW
 from sklearn.metrics import mean_squared_error  
-
+from sklearn.neural_network import MLPRegressor
 
 
 def _log_mem(tag: str = ""):
@@ -162,6 +162,8 @@ def transform(train_dict, *args, **kwargs):
             model = RandomForestRegressor(random_state=42, **params)
         elif model_type == "XGBoost":
             model = XGBRegressor(random_state=42, **params, use_label_encoder=False, eval_metric="rmse")
+        elif model_type == "NeuralNet":
+            model = MLPRegressor(random_state=42, **params)
         else:
             raise ValueError(f"Unknown model_type: {model_type}")
     

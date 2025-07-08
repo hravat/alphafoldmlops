@@ -179,6 +179,128 @@ services:
     networks:
       - my_network                        # use the same network as prometheus
 
+  sdv-simulator:
+    build:
+      context: .
+      dockerfile: dockerfile.sdv
+    container_name: sdv-sim
+    environment:
+      SAMPLE_INTERVAL: "5"
+      ML_DATASET_DBNAME: ${ML_DATASET_DBNAME}
+      POSTGRES_SCHEMA: ${POSTGRES_SCHEMA}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+    volumes:
+      - ../sdv/generate_data.py:/app/generate_data.py
+    networks:
+      - my_network 
+    command: ["python", "/app/generate_data.py"]
+
+  kafka:
+    image: bitnami/kafka:4.0.0
+    container_name: kafka
+    networks:
+      - my_network
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_CLUSTER_ID: ${KAFKA_CLUSTER_ID}
+      KAFKA_CFG_NODE_ID: ${KAFKA_CFG_NODE_ID}
+      KAFKA_CFG_PROCESS_ROLES: ${KAFKA_CFG_PROCESS_ROLES}
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: ${KAFKA_CFG_CONTROLLER_QUORUM_VOTERS}
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: ${KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP}
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: ${KAFKA_CFG_CONTROLLER_LISTENER_NAMES}
+      KAFKA_CFG_LISTENERS: ${KAFKA_CFG_LISTENERS}
+      KAFKA_CFG_ADVERTISED_LISTENERS: ${KAFKA_CFG_ADVERTISED_LISTENERS}
+      ALLOW_PLAINTEXT_LISTENER: ${ALLOW_PLAINTEXT_LISTENER}
+      KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: ${KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE}
+
+#  model-server-sgd:
+#    build:
+#      context: .
+#      dockerfile: dockerfile.modelserver
+#    environment:
+#      # MLflow tracking server you already run
+#      MLFLOW_TRACKING_URI: http://mlflow:5000
+#      MODEL_NAME: ChemblPredictor        # change if you registered a different name
+#      MODEL_STAGE: Production
+#    ports:
+#      - "8090:8000"                      # external access if you want it
+#    depends_on:
+#      - mlflow
+#    networks:
+#      - my_network
+#
+#  model-server-xgboost:
+#    build:
+#      context: .
+#      dockerfile: dockerfile.modelserver
+#    environment:
+#      # MLflow tracking server you already run
+#      MLFLOW_TRACKING_URI: http://mlflow:5000
+#      MODEL_NAME: ChemblPredictor        # change if you registered a different name
+#      MODEL_STAGE: Production
+#    ports:
+#      - "8090:8000"                      # external access if you want it
+#    depends_on:
+#      - mlflow
+#    networks:
+#      - my_network
+#    volumes:
+#    - ../mlflow-artifacts:/mlflow-artifacts  
+#  model-server-nn:
+#    build:
+#      context: .
+#      dockerfile: dockerfile.modelserver
+#    environment:
+#      # MLflow tracking server you already run
+#      MLFLOW_TRACKING_URI: http://mlflow:5000
+#      MODEL_NAME: ChemblPredictor        # change if you registered a different name
+#      MODEL_STAGE: Production
+#    ports:
+#      - "8090:8000"                      # external access if you want it
+#    depends_on:
+#      - mlflow
+#    networks:
+#      - my_network
+#    volumes:
+#    - ../mlflow-artifacts:/mlflow-artifacts  
+  model-server-rf:
+    build:
+      context: .
+      dockerfile: dockerfile.modelserver
+    environment:
+      # MLflow tracking server you already run
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      MODEL_NAME: RandomForest_baseline        # change if you registered a different name
+      MODEL_STAGE: Production
+    ports:
+      - "8090:8000"                      # external access if you want it
+    depends_on:
+      - mlflow
+    networks:
+      - my_network
+    volumes:
+    - ../mlflow-artifacts:/mlflow-artifacts  
+
+  prediction-consumer:
+    build:
+      context: .
+      dockerfile: dockerfile.consumer
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9094
+      KAFKA_TOPIC: sdv_stream
+    depends_on:
+      - kafka
+      - model-server-rf
+    networks:
+      - my_network
+    volumes:
+      - ../consumer/consumer.py:/app/consumer.py
+    command: ["python", "/app/consumer.py"]
+
 
 networks:
   my_network:

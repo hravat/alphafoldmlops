@@ -1,0 +1,10 @@
+FROM python:3.10-slim 
+
+
+# Install SDV (and pip upgrade)
+RUN pip install --upgrade pip \
+    && pip install sdv psycopg2-binary requests pandas confluent-kafka
+
+
+    
+CMD ["python"]

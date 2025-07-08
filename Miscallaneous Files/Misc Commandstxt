@@ -1,0 +1,25 @@
+ prefect deployment run 'ml-regerssion-pipeline/ml_regression_pipeline_run'
+ 
+ 
+ docker exec -it kafka kafka-console-consumer.sh \                                                   ─╯
+  --bootstrap-server kafka:9094 \
+  --topic sdv_stream \
+  --from-beginning
+
+
+
+docker exec -it kafka kafka-console-consumer.sh \
+  --bootstrap-server kafka:9094 \
+  --topic sdv_stream \
+  --from-beginning
+  
+  
+ curl -X GET http://kafka:9092/topics 
+ 
+ curl -X POST http://localhost:8090/invocations \                                                    ─╯
+     -H "Content-Type: application/json" \
+     -d '{
+           "inputs": [
+             {"mw_freebase": 300, "alogp": 2.0, "hba": 5, "hbd": 1}
+           ]
+         }'

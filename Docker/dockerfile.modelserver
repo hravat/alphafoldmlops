@@ -1,0 +1,10 @@
+FROM python:3.10-slim
+
+RUN pip install --upgrade pip \
+    && pip install mlflow pandas scikit-learn psycopg2-binary
+
+ENV PYTHONUNBUFFERED=1
+
+# Fetch and serve the Production model each time the container starts
+CMD ["bash", "-c", \
+    "mlflow models serve -m models:/${MODEL_NAME}/${MODEL_STAGE} -p 8000 --no-conda --host 0.0.0.0"]

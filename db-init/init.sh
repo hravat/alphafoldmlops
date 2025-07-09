@@ -7,6 +7,7 @@
 DB_NAME="chembl_db"
 DB_USER="postgres"
 DUMP_FILE="data/chembl_35/chembl_35_postgresql/chembl_ml_dataset.dump"
+DUMP_FILE_MLFOW="data/mlflow_dump.dump"
 
 # Create the database (if it doesn't already exist)
 echo "Creating database $DB_NAME if it doesn't exist..."
@@ -54,6 +55,12 @@ psql -U "$DB_USER" -c "CREATE USER $MLFLOW_USER WITH PASSWORD '$MLFLOW_PASSWORD'
 
 echo "Creating database $MLFLOW_DB..."
 psql -U "$DB_USER" -c "CREATE DATABASE $MLFLOW_DB OWNER $MLFLOW_USER;" || echo "$MLFLOW_DB already exists."
+
+echo "Restoring the table mlflow_fb from $DUMP_FILE_MLFOW..."
+pg_restore -U "$DB_USER" -d "$MLFLOW_DB" --table=mlflow_fb "$DUMP_FILE_MLFOW"
+echo "Table mlflow_fb restored successfully."
+
+
 
 echo "Granting privileges on $MLFLOW_DB to $MLFLOW_USER..."
 psql -U "$DB_USER" -d "$MLFLOW_DB" -c "GRANT ALL PRIVILEGES ON DATABASE $MLFLOW_DB TO $MLFLOW_USER;"

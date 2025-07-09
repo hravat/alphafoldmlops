@@ -3,3 +3,8 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets: ['pushgateway:9091']
+
+  - job_name: 'ml_predictions'
+    scrape_interval: 500ms 
+    static_configs:
+      - targets: ['pushgateway:9091']  # match your setup

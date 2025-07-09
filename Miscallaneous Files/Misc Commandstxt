@@ -23,3 +23,15 @@ docker exec -it kafka kafka-console-consumer.sh \
              {"mw_freebase": 300, "alogp": 2.0, "hba": 5, "hbd": 1}
            ]
          }'
+
+
+ curl -X POST http://localhost:8090/invocations \                                                    ─╯
+     -H "Content-Type: application/json" \
+     -d '{
+           "inputs": [
+             {"mw_freebase": 300, "alogp": 2.0, "hba": 5, "hbd": 1}
+           ]
+         }'
+
+
+mlflow models serve -m "models:/XGBoost_baseline/Production" -p 1234 --no-conda

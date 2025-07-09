@@ -57,3 +57,4 @@ JOIN
 
 
 pg_dump -U postgres -d chembl_35 -t public.chembl_ml_dataset -Fc -f chembl_ml_dataset.dump
+pg_dump -U postgres -d mlflow_db -F c -f mlflow_dump.dump

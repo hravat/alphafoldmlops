@@ -151,7 +151,10 @@ def transform(train_dict, *args, **kwargs):
 
     # Start a fresh run
     mlflow.set_experiment(experiment_name)
-    mlflow.sklearn.autolog()
+    if model_type=="XGBoost":
+        mlflow.xgboost.autolog()
+    else:
+        mlflow.sklearn.autolog()
 
     if model_path.exists():
         model = joblib.load(model_path)

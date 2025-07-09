@@ -217,56 +217,59 @@ services:
       ALLOW_PLAINTEXT_LISTENER: ${ALLOW_PLAINTEXT_LISTENER}
       KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: ${KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE}
 
-#  model-server-sgd:
-#    build:
-#      context: .
-#      dockerfile: dockerfile.modelserver
-#    environment:
-#      # MLflow tracking server you already run
-#      MLFLOW_TRACKING_URI: http://mlflow:5000
-#      MODEL_NAME: ChemblPredictor        # change if you registered a different name
-#      MODEL_STAGE: Production
-#    ports:
-#      - "8090:8000"                      # external access if you want it
-#    depends_on:
-#      - mlflow
-#    networks:
-#      - my_network
-#
-#  model-server-xgboost:
-#    build:
-#      context: .
-#      dockerfile: dockerfile.modelserver
-#    environment:
-#      # MLflow tracking server you already run
-#      MLFLOW_TRACKING_URI: http://mlflow:5000
-#      MODEL_NAME: ChemblPredictor        # change if you registered a different name
-#      MODEL_STAGE: Production
-#    ports:
-#      - "8090:8000"                      # external access if you want it
-#    depends_on:
-#      - mlflow
-#    networks:
-#      - my_network
-#    volumes:
-#    - ../mlflow-artifacts:/mlflow-artifacts  
-#  model-server-nn:
-#    build:
-#      context: .
-#      dockerfile: dockerfile.modelserver
-#    environment:
-#      # MLflow tracking server you already run
-#      MLFLOW_TRACKING_URI: http://mlflow:5000
-#      MODEL_NAME: ChemblPredictor        # change if you registered a different name
-#      MODEL_STAGE: Production
-#    ports:
-#      - "8090:8000"                      # external access if you want it
-#    depends_on:
-#      - mlflow
-#    networks:
-#      - my_network
-#    volumes:
-#    - ../mlflow-artifacts:/mlflow-artifacts  
+  model-server-sgd:
+    build:
+      context: .
+      dockerfile: dockerfile.modelserver
+    environment:
+      # MLflow tracking server you already run
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      MODEL_NAME: SGDRegressor_baseline        # change if you registered a different name
+      MODEL_STAGE: Production
+    ports:
+      - "8091:8000"                      # external access if you want it
+    depends_on:
+      - mlflow
+    networks:
+      - my_network
+    volumes:
+      - ../mlflow-artifacts:/mlflow-artifacts  
+      - ../models:/models  # Mount models directory if needed
+  model-server-xgboost:
+    build:
+      context: .
+      dockerfile: dockerfile.modelserver
+    environment:
+      # MLflow tracking server you already run
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      MODEL_NAME: XGBoost_baseline        # change if you registered a different name
+      MODEL_STAGE: Production
+    ports:
+      - "8092:8000"                      # external access if you want it
+    depends_on:
+      - mlflow
+    networks:
+      - my_network
+    volumes:
+      - ../mlflow-artifacts:/mlflow-artifacts  
+      - ../models:/models  # Mount models directory if needed
+  model-server-nn:
+    build:
+      context: .
+      dockerfile: dockerfile.modelserver
+    environment:
+      # MLflow tracking server you already run
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      MODEL_NAME: NeuralNet_baseline        # change if you registered a different name
+      MODEL_STAGE: Production
+    ports:
+      - "8093:8000"                      # external access if you want it
+    depends_on:
+      - mlflow
+    networks:
+      - my_network
+    volumes:
+    - ../mlflow-artifacts:/mlflow-artifacts  
   model-server-rf:
     build:
       context: .

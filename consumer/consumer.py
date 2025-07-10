@@ -24,7 +24,11 @@ def push_all_predictions_to_gateway(predictions: dict):
             continue
         g.labels(model_name=model_name).set(prediction)
     try:
-        push_to_gateway(PUSHGATEWAY_URL, job='ml_predictions', registry=registry)
+        push_to_gateway(PUSHGATEWAY_URL, 
+                        job='ml_predictions', 
+                        registry=registry,
+                        grouping_key={"predictions": "ml_predictions"},
+                        )
         print(f"[PUSHED] Batch predictions: {predictions}")
     except Exception as e:
         print(f"[ERROR] Failed to push batch predictions: {e}")
@@ -97,6 +101,10 @@ try:
         kafka_message=msg.value().decode('utf-8')
         payload = json.loads(kafka_message)
         print(f"[KAFKA MESSAGE] {kafka_message}")
+        
+        
+        standard_value=payload.get("standard_value", -9999)
+        
 
         # You can add your message processing logic here
         rf_prediction=call_model("model-server-rf", payload)
@@ -109,7 +117,8 @@ try:
         "rf": rf_prediction,
         "nn": nn_prediction,
         "sgd": sgd_prediction,
-        "xgboost": xgboost_prediction
+        "xgboost": xgboost_prediction,
+        "target":standard_value
         }
         
         push_all_predictions_to_gateway(preds)

@@ -18,157 +18,420 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 2,
   "links": [],
   "panels": [
-  {
-    "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-    "fieldConfig": {
-      "defaults": {
-        "color": { "mode": "fixed", "fixedColor": "#FF0000" }   /* red */
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
       },
-      "overrides": []
-    },
-    "gridPos": { "h": 8, "w": 6, "x": 0, "y": 0 },
-    "id": 1,
-    "options": { "legend": { "showLegend": true }, "tooltip": { "mode": "single" } },
-    "targets": [
-      {
-        "expr": "alf_abs_max_err",
-        "legendFormat": "Absolute Maximum Error",
-        "refId": "A"
-      }
-    ],
-    "title": "Absolute Maximum Error",
-    "type": "timeseries"
-  },
-  {
-    "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-    "fieldConfig": {
-      "defaults": {
-        "color": { "mode": "fixed", "fixedColor": "#00FF00" }   /* green */
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
       },
-      "overrides": []
-    },
-    "gridPos": { "h": 8, "w": 6, "x": 6, "y": 0 },
-    "id": 2,
-    "options": { "legend": { "showLegend": true }, "tooltip": { "mode": "single" } },
-    "targets": [
-      {
-        "expr": "alf_rmse",
-        "legendFormat": "RMSE",
-        "refId": "A"
-      }
-    ],
-    "title": "RMSE",
-    "type": "timeseries"
-  },
-  {
-    "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-    "fieldConfig": {
-      "defaults": {
-        "color": { "mode": "fixed", "fixedColor": "#0000FF" }   /* blue */
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
       },
-      "overrides": []
-    },
-    "gridPos": { "h": 8, "w": 6, "x": 0, "y": 8 },
-    "id": 3,
-    "options": { "legend": { "showLegend": true }, "tooltip": { "mode": "single" } },
-    "targets": [
-      {
-        "expr": "alf_mae_mean",
-        "legendFormat": "MAE Mean",
-        "refId": "A"
-      }
-    ],
-    "title": "MAE Mean",
-    "type": "timeseries"
-  },
-  {
-    "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-    "fieldConfig": {
-      "defaults": {
-        "color": { "mode": "fixed", "fixedColor": "#FF00FF" }   /* magenta */
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
       },
-      "overrides": []
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "model_prediction{model_name=\"rf\"}",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "model_prediction{model_name=\"target\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Random Forest",
+      "type": "timeseries"
     },
-    "gridPos": { "h": 8, "w": 6, "x": 6, "y": 8 },
-    "id": 4,
-    "options": { "legend": { "showLegend": true }, "tooltip": { "mode": "single" } },
-    "targets": [
-      {
-        "expr": "alf_mae_std",
-        "legendFormat": "MAE Std",
-        "refId": "A"
-      }
-    ],
-    "title": "MAE Std",
-    "type": "timeseries"
-  },
-  {
-    "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-    "fieldConfig": {
-      "defaults": {
-        "color": { "mode": "fixed", "fixedColor": "#FFA500" }   /* orange */
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
       },
-      "overrides": []
-    },
-    "gridPos": { "h": 8, "w": 6, "x": 0, "y": 16 },
-    "id": 5,
-    "options": { "legend": { "showLegend": true }, "tooltip": { "mode": "single" } },
-    "targets": [
-      {
-        "expr": "alf_mape_mean",
-        "legendFormat": "MAPE Mean",
-        "refId": "A"
-      }
-    ],
-    "title": "MAPE Mean",
-    "type": "timeseries"
-  },
-  {
-    "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-    "fieldConfig": {
-      "defaults": {
-        "color": { "mode": "fixed", "fixedColor": "#00CED1" }   /* teal */
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
       },
-      "overrides": []
-    },
-    "gridPos": { "h": 8, "w": 6, "x": 6, "y": 16 },
-    "id": 6,
-    "options": { "legend": { "showLegend": true }, "tooltip": { "mode": "single" } },
-    "targets": [
-      {
-        "expr": "alf_mape_std",
-        "legendFormat": "MAPE Std",
-        "refId": "A"
-      }
-    ],
-    "title": "MAPE Std",
-    "type": "timeseries"
-  },
-  {
-    "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-    "fieldConfig": {
-      "defaults": {
-        "color": { "mode": "fixed", "fixedColor": "#8A2BE2" }   /* purple */
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
       },
-      "overrides": []
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "expr": "model_prediction{model_name=\"nn\"}",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "model_prediction{model_name=\"target\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Neural Network",
+      "type": "timeseries"
     },
-    "gridPos": { "h": 8, "w": 6, "x": 0, "y": 24 },
-    "id": 7,
-    "options": { "legend": { "showLegend": true }, "tooltip": { "mode": "single" } },
-    "targets": [
-      {
-        "expr": "alf_r2",
-        "legendFormat": "R2 Score",
-        "refId": "A"
-      }
-    ],
-    "title": "R2 Score",
-    "type": "timeseries"
-  }
-],
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "expr": "model_prediction{model_name=\"sgd\"}",
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "model_prediction{model_name=\"target\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "SGD",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "expr": "model_prediction{model_name=\"xgboost\"}",
+          "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "model_prediction{model_name=\"target\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "XGBoost",
+      "type": "timeseries"
+    }
+  ],
   "preload": false,
   "schemaVersion": 41,
   "tags": [],
@@ -181,7 +444,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Alphafold Regression Metrics Copy",
-  "uid": "fe10707e-459b-4a91-a7dc-95a539bf5454",
+  "title": "Model Predictions",
+  "uid": "d7d00e23-5ab8-451e-a620-aa01cd11e22a",
   "version": 1
 }

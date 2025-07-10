@@ -1,10 +1,10 @@
-echo "Initializing database..."
-
-##RUN INS IDE LIKE DBEAVER
-CREATE DATABASE chembl_35;
-
-###
+# Step 4: Create a PostgreSQL database (you will be prompted for your password)
 createdb -h localhost -p 5432 -U postgres chembl35
 
-###RUN ON CONTAINER
-pg_restore --no-owner -h localhost -p 5432 -U postgres -d chembl35 -v data/chembl_35/chembl_35_postgresql/chembl_35_postgresql.dmp
+# Step 5: Restore the database from the .dmp file
+pg_restore --no-owner \
+  -h localhost \
+  -p 5432 \
+  -U postgres \
+  -d chembl35 \
+  -v data/chembl_35/chembl_35_postgresql/chembl_35_postgresql.dmp

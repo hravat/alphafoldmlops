@@ -458,3 +458,55 @@ To add models / hyperparameters to the grid search, you can modify the below sec
 
 
   3) Once this is done you can safely turn off all the containers.
+
+
+  4) Run the below containers :- 
+
+    1) Postgres
+    2) Mlflow
+    3) Grafana
+    4) Prometheus
+    5) Pushgateway
+    6) sdv-simulator
+    7) Kafka  
+
+  Initially there will be no data in the mlflow DB and the UI will also be empty.
+
+  Then run the SQL script to restore the mlflow DB with the insert statements you created in step 2.
+
+  Once you inspect the UI you will see the models registered in MLflow.
+
+
+  5) Next we will run the model serving containers.
+
+    1) model-server-sgd
+    2) model-server-xgboost
+    3) model-server-nn
+    4) model-server-rf
+    5) prediction-consumer
+
+  These containers will serve the models using the MLflow REST API.
+
+
+  6) The predictions can then be inspected in the following steps 
+
+  - The sdv-simulator will generate synthetic data and push it to Kafka.
+  - The prediction-consumer will listen to the Kafka topic, fetch predictions from the model servers, and push metrics to the Prometheus Pushgateway.
+  - Prometheus will scrape the metrics from the Pushgateway.
+  - Grafana will visualize the metrics in real-time dashboards.
+
+
+
+## Conclusion
+
+This project demonstrates a complete end-to-end machine learning pipeline for predicting chemical compound activity using a variety of models. It showcases the integration of multiple tools and technologies, including PostgreSQL, Mage, Prefect, MLflow, Evidently, Prometheus, Grafana, and Kafka, to create a scalable and monitored system.
+
+## Further Improvements
+
+- **Cloud Deployment**: Migrate the entire setup to a cloud platform like AWS, GCP, or Azure for better scalability and reliability.
+
+- **Parallel Processing**: Implement parallel processing for model training and prediction to speed up the pipeline.
+
+- **Feature Engineering**: Explore additional features or transformations to improve model performance as model performance is not up to the mark. (This is because focus is on MLops and not ML)
+
+- **Hyperparameter Tuning**: Implement automated hyperparameter tuning using tools like Optuna or Hyperopt to find the best model configurations.

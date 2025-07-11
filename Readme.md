@@ -51,6 +51,8 @@ Using just these four inputs, the model predicts a fifth value:
 
 This architecture supports an end-to-end automated, scalable, and monitored machine learning pipeline for chemical compound activity prediction.
 
+   ![Optional Alt Text](readmeimages/Architecture.png)
+
 
 ## Dataset Preperation 
 
